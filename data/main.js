@@ -110,10 +110,12 @@ function render() {
  
 function run() {
     if (80 in keysDown) {
-        paused = !paused;
-        if (paused === false) {
-            timerC = setInterval(function() {timer ++;}, 1000);
-        }
+        setTimeout(
+            paused = !paused;
+            if (paused === false) {
+                timerC = setInterval(function() {timer ++;}, 1000);
+            };
+        , 200);
     }
     if (paused === false) {
         update((Date.now() - time) / 1000);
