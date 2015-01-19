@@ -110,7 +110,7 @@ function render() {
  
 function run() {
     if (80 in keysDown) {
-        setTimeout(
+        timeout = setTimeout(
             paused = !paused;
             if (paused === false) {
                 timerC = setInterval(function() {timer ++;}, 1000);
