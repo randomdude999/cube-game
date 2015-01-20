@@ -138,23 +138,15 @@ function render() {
     ctx.font = '12pt Arial';
     ctx.fillStyle = '#fff';
     ctx.textBaseline = 'top';
-    ctx.fillText("Score:", 10, 10);
-    ctx.fillText("Time:", 10, 32);
-    ctx.fillText(itemCounter, 60, 10);
-    ctx.fillText(timer, 54, 32);
+    ctx.fillText("Score: " + itemCounter, 10, 10);
+    ctx.fillText("Time: " + timer, 10, 32);
     if (d1ev === true) {
-        ctx.fillText("Canvas width:", 10, 54);
-        ctx.fillText("Canvas height:", 10, 76);
-        ctx.fillText("MySprite x:", 10, 98);
-        ctx.fillText("MySprite y:", 10, 120);
-        ctx.fillText("Item x:", 10, 142);
-        ctx.fillText("Item y:", 10, 164);
-        ctx.fillText(canvas.width, 114, 54);
-        ctx.fillText(canvas.height, 120, 76);
-        ctx.fillText(SpriteDispX, 92, 98);
-        ctx.fillText(SpriteDispY, 92, 120);
-        ctx.fillText(item.x, 59, 142);
-        ctx.fillText(item.y, 59, 164);
+        ctx.fillText("Canvas width: " + canvas.width, 10, 54);
+        ctx.fillText("Canvas height: " + canvas.height, 10, 76);
+        ctx.fillText("MySprite x: " + SpriteDispX, 10, 98);
+        ctx.fillText("MySprite y: " + SpriteDispY, 10, 120);
+        ctx.fillText("Item x: " + item.x, 10, 142);
+        ctx.fillText("Item y: " + item.y, 10, 164);
     };
 };
  
