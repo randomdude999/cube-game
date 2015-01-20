@@ -21,4 +21,4 @@ Move with the arrow keys, pause with P
 
 ## TOFIX:
 
-* Pausing (current flaw: you need to hit the button for exactly 10-20 milliseconds)
+* [x] Pausing (current flaw: you need to hit the button for exactly 10-20 milliseconds)
