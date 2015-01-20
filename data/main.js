@@ -61,8 +61,24 @@ var time = Date.now();
  
 var SpriteDispX = 0;
 var SpriteDispY = 0;
+
+var fps = {
+    current: 0,
+    last: 0,
+    lastUpdated: Date.now(),
+    update: function() {
+        fps.current ++;
+        if (Date.now() - fps.lastUpdated >= 1000) {
+            fps.last = fps.current;
+            fps.current = 0;
+            fps.lastUpdated = Date.now();
+        };
+    }
+};
  
 function update(mod) {
+    fps.update();
+    
     if (37 in keysDown) {
         mySprite.x -= mySprite.speed * mod;
     };
@@ -147,6 +163,7 @@ function render() {
         ctx.fillText("MySprite y: " + SpriteDispY, 10, 120);
         ctx.fillText("Item x: " + item.x, 10, 142);
         ctx.fillText("Item y: " + item.y, 10, 164);
+        ctx.fillText("FPS: " + fps.last, 10, 186);
     };
 };
  
