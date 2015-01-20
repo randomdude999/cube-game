@@ -37,7 +37,7 @@ var item = {
 
 
 
-var dev = true;
+var dev = false;
 
 
 var itemCounter = 0;
@@ -144,18 +144,18 @@ function render() {
  
 function run() {
     if (80 in keysDown) {
-        var timeout = setTimeout(function(){
+        var timeout = setTimeout(function() {
             paused = !paused;
             if (paused === false) {
                 timerC = setInterval(function() {timer ++;}, 1000);
-            }
-        }, 200);
+            };
+            if (paused === true) {
+                clearInterval(timerC);
+            };
+        }, 100);
     }
     if (paused === false) {
         update((Date.now() - time) / 1000);
-    }
-    else {
-        clearInterval(timerC);
     }
     render();
     time = Date.now();
@@ -164,3 +164,5 @@ function run() {
 mainLoop = setInterval(run, 10);
 itemNotInCanvas();
 timerC = setInterval(function() {timer ++;}, 1000);
+
+console.log("type 'dev = true' to enable debug mode");
