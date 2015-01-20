@@ -1,15 +1,7 @@
-var ctx = canvas.getContext('2d');
-
 var itemCounter = 0;
 var timer = 0;
 var paused = false;
  
-
-if (useCustomCanvas === false) {
-    canvas.width = document.documentElement.clientWidth - 2;
-    canvas.height = document.documentElement.clientHeight - 5;
-}
-
 var keysDown = {};
 window.addEventListener('keydown', function(e) {
     keysDown[e.keyCode] = true;
@@ -110,12 +102,12 @@ function render() {
  
 function run() {
     if (80 in keysDown) {
-        timeout = setTimeout(
+        var timeout = setTimeout(function(){
             paused = !paused;
             if (paused === false) {
                 timerC = setInterval(function() {timer ++;}, 1000);
-            };
-        , 200);
+            }
+        }, 200);
     }
     if (paused === false) {
         update((Date.now() - time) / 1000);
