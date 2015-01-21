@@ -5,6 +5,7 @@ canvas.width = document.documentElement.clientWidth - 2;
 canvas.height = document.documentElement.clientHeight - 5;
 
 
+var bgcolor = '#000';
  
 
 var mySprite = {
@@ -43,6 +44,54 @@ var dev = function() {
     if(d1ev === true) {console.log("Developer mode enabled");}
     else {console.log("Developer mode disabled");};
 };
+
+var menu = {
+    loc: 0,
+    sel: 0,
+    hl: function(x) {
+        if (menu.sel === x) {ctx.fillStyle = '#f00'}
+        else {ctx.fillStyle = '#000'};
+    },
+    draw: function() {
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.font = '36pt Courier New';
+        if (menu.sel <= -1) {menu.sel = 0};
+        if (menu.loc === 0) {
+            if (menu.sel >= 2) {menu.sel = 1};
+            ctx.fillStyle = '#000';
+            ctx.fillText("MENU", 10, 10);
+            menu.hl(0);
+            ctx.fillText("Resume", 10, 56);
+            menu.hl(1);
+            ctx.fillText("Options", 10, 102);
+        }
+        else if(menu.loc === 1) {
+            if (menu.sel >= 4) {menu.sel = 3;};
+            ctx.fillStyle = '#000';
+            ctx.fillText("OPTIONS", 10, 10);
+            menu.hl(0);
+            ctx.fillText("Your cube", 10, 56);
+            menu.hl(1);
+            ctx.fillText("Collectable", 10, 102);
+            menu.hl(2);
+            ctx.fillText("Canvas", 10, 148);
+            menu.hl(3);
+            ctx.fillText("Back", 10, 194);
+        };
+        else if(menu.loc === 2)
+    },
+    selDown: function() {menu.sel++;},
+    selUp: function() {menu.sel--;},
+    enter: function() {
+        if (menu.loc === 0 && menu.sel === 0) {paused = !paused;};
+        if (menu.loc === 0 && menu.sel === 1) {setTimeout(function() {menu.loc = 1}, 50);};
+        if (menu.loc === 1 && menu.sel === 0) {setTimeout(function() {menu.loc = 2}, 50);};
+        if (menu.loc === 1 && menu.sel === 1) {setTimeout(function() {menu.loc = 3}, 50);};
+        if (menu.loc === 1 && menu.sel === 2) {setTimeout(function() {menu.loc = 4}, 50);};
+        if (menu.loc === 1 && menu.sel === 3) {setTimeout(function() {menu.loc = 0}, 50);};
+    }
+}
  
 var itemCounter = 0;
 var timer = 0;
@@ -55,6 +104,17 @@ window.addEventListener('keydown', function(e) {
         if (paused === false) {
             timerC = setInterval(function() {timer ++;}, 1000);
         }
+    }
+    else if (e.keyCode === 13) {
+        menu.enter();
+    }
+    else if (e.keyCode === 38) {
+        menu.selUp();
+        keysDown[e.keyCode] = true;
+    }
+    else if (e.keyCode === 40) {
+        menu.selDown();
+        keysDown[e.keyCode] = true;
     }
     else {
         keysDown[e.keyCode] = true;
@@ -137,7 +197,7 @@ function itemNotInCanvas() {
 };
  
 function render() {
-    ctx.fillStyle = '#000';
+    ctx.fillStyle = bgcolor;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
  
     if (SpriteDispX < 0) {
@@ -174,13 +234,6 @@ function render() {
     };
 };
 
-function renderMenu() {
-    ctx.fillStyle = '#fff';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.font = '24pt Courier New';
-    ctx.fillStyle = '#000';
-    ctx.fillText("MENU", canvas.width / 2 - 36, canvas.height / 2 - 12);
-};
  
 function run() {
     if (paused === false) {
@@ -189,12 +242,12 @@ function run() {
     }
     else if (paused === true) {
         clearInterval(timerC);
-        renderMenu();
+        menu.draw();
     };
     time = Date.now();
 };
  
-mainLoop = setInterval(run, 10);
+setInterval(run, 10);
 itemNotInCanvas();
 timerC = setInterval(function() {timer ++;}, 1000);
 
