@@ -40,8 +40,8 @@ var item = {
 var d1ev = false;
 var dev = function() {
     d1ev = !d1ev;
-    if(d1ev === true) {return "Developer mode enabled";}
-    else {return "Developer mode disabled";};
+    if(d1ev === true) {console.log("Developer mode enabled");}
+    else {console.log("Developer mode disabled");};
 };
  
 var itemCounter = 0;
@@ -50,12 +50,19 @@ var paused = false;
  
 var keysDown = {};
 window.addEventListener('keydown', function(e) {
-    keysDown[e.keyCode] = true;
+    if (e.keyCode === 80) {
+        paused = !paused;
+        if (paused === false) {
+            timerC = setInterval(function() {timer ++;}, 1000);
+        }
+    }
+    else {
+        keysDown[e.keyCode] = true;
+    };
 });
 window.addEventListener('keyup', function(e) {
     delete keysDown[e.keyCode];
 });
- 
  
 var time = Date.now();
  
@@ -151,7 +158,7 @@ function render() {
     ctx.fillStyle = item.color;
     ctx.fillRect(item.x, item.y, item.size, item.size);
  
-    ctx.font = '12pt Arial';
+    ctx.font = '12pt Courier New';
     ctx.fillStyle = '#fff';
     ctx.textBaseline = 'top';
     ctx.fillText("Score: " + itemCounter, 10, 10);
@@ -166,23 +173,24 @@ function render() {
         ctx.fillText("FPS: " + fps.last, 10, 186);
     };
 };
+
+function renderMenu() {
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.font = '24pt Courier New';
+    ctx.fillStyle = '#000';
+    ctx.fillText("MENU", canvas.width / 2 - 36, canvas.height / 2 - 12);
+};
  
 function run() {
-    if (80 in keysDown) {
-        var timeout = setTimeout(function() {
-            paused = !paused;
-            if (paused === false) {
-                timerC = setInterval(function() {timer ++;}, 1000);
-            };
-            if (paused === true) {
-                clearInterval(timerC);
-            };
-        }, 100);
-    };
     if (paused === false) {
         update((Date.now() - time) / 1000);
+        render();
+    }
+    else if (paused === true) {
+        clearInterval(timerC);
+        renderMenu();
     };
-    render();
     time = Date.now();
 };
  
