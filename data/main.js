@@ -79,7 +79,6 @@ var menu = {
             menu.hl(3);
             ctx.fillText("Back", 10, 194);
         };
-        else if(menu.loc === 2)
     },
     selDown: function() {menu.sel++;},
     selUp: function() {menu.sel--;},
