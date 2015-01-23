@@ -19,7 +19,7 @@ Move with the arrow keys, pause with P
 ## TODO:
 
 * [x] Some kind of menu
-    * In-game customization options (__WORKING ON IT__)
+    * [x] In-game customization options (YAY)
 
 ## TOFIX:
 
