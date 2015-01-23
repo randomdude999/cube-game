@@ -6,6 +6,11 @@ canvas.height = document.documentElement.clientHeight - 5;
 
 
 var bgcolor = '#000';
+
+var font12px = '12pt Courier New';
+var font36px = '36pt Courier New';
+
+var input = '#';
  
 
 var mySprite = {
@@ -55,40 +60,163 @@ var menu = {
     draw: function() {
         ctx.fillStyle = '#fff';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.font = '36pt Courier New';
+        ctx.font = font36px;
+        ctx.fillStyle = '#000';
         if (menu.sel <= -1) {menu.sel = 0};
         if (menu.loc === 0) {
             if (menu.sel >= 2) {menu.sel = 1};
-            ctx.fillStyle = '#000';
             ctx.fillText("MENU", 10, 10);
             menu.hl(0);
             ctx.fillText("Resume", 10, 56);
             menu.hl(1);
             ctx.fillText("Options", 10, 102);
         }
-        else if(menu.loc === 1) {
+        else if (menu.loc === 1) {
             if (menu.sel >= 4) {menu.sel = 3;};
-            ctx.fillStyle = '#000';
             ctx.fillText("OPTIONS", 10, 10);
             menu.hl(0);
             ctx.fillText("Your cube", 10, 56);
             menu.hl(1);
             ctx.fillText("Collectable", 10, 102);
             menu.hl(2);
-            ctx.fillText("Canvas", 10, 148);
+            ctx.fillText("Update canvas", 10, 148);
             menu.hl(3);
             ctx.fillText("Back", 10, 194);
-        };
+        }
+        else if (menu.loc === 2) {
+            if (menu.sel >= 4) {menu.sel = 3};
+            ctx.fillText("YOUR CUBE", 10, 10);
+            menu.hl(0);
+            ctx.fillText("Color", 10, 56);
+            menu.hl(1);
+            ctx.fillText("Size", 10, 102);
+            menu.hl(2);
+            ctx.fillText("Speed", 10, 148);
+            menu.hl(3);
+            ctx.fillText("Back", 10, 194);
+        }
+        else if (menu.loc === 3) {
+            if (menu.sel >= 3) {menu.sel = 2};
+            ctx.fillText("COLLECTABLE", 10, 10);
+            menu.hl(0);
+            ctx.fillText("Color", 10, 56);
+            menu.hl(1);
+            ctx.fillText("Size", 10, 102);
+            menu.hl(2);
+            ctx.fillText("Back", 10, 148);
+        }
+        else if (menu.loc === 4) {
+            ctx.fillText("YOUR CUBE: COLOR", 10, 10);
+            ctx.fillText(input, 10, 56);
+        }
+        else if (menu.loc === 5) {
+            if (menu.sel >= 4) {menu.sel = 3};
+            ctx.fillText("YOUR CUBE: SIZE", 10, 10);
+            menu.hl(0);
+            ctx.fillText("Small", 10, 56);
+            menu.hl(1);
+            ctx.fillText("Medium", 10, 102);
+            menu.hl(2);
+            ctx.fillText("Large", 10, 148);
+            menu.hl(3);
+            ctx.fillText("Back", 10, 194);
+        }
+        else if (menu.loc === 6) {
+            ctx.fillText("YOUR CUBE: SPEED", 10, 10);
+            menu.hl(0);
+            ctx.fillText("Slow", 10, 56);
+            menu.hl(1);
+            ctx.fillText("Medium", 10, 102);
+            menu.hl(2);
+            ctx.fillText("Fast", 10, 148);
+            menu.hl(3);
+            ctx.fillText("Back", 10, 194);
+        }
+        else if (menu.loc === 7) {
+            ctx.fillText("COLLECTABLE: COLOR", 10, 10);
+            ctx.fillText(input, 10, 56);
+        }
+        else if (menu.loc === 8) {
+            if (menu.sel >= 4) {menu.sel = 3};
+            ctx.fillText("COLLECTABLE: SIZE", 10, 10);
+            menu.hl(0);
+            ctx.fillText("Small", 10, 56);
+            menu.hl(1);
+            ctx.fillText("Medium", 10, 102);
+            menu.hl(2);
+            ctx.fillText("Large", 10, 148);
+            menu.hl(3);
+            ctx.fillText("Back", 10, 194);
+        }
     },
     selDown: function() {menu.sel++;},
     selUp: function() {menu.sel--;},
     enter: function() {
-        if (menu.loc === 0 && menu.sel === 0) {paused = !paused;};
-        if (menu.loc === 0 && menu.sel === 1) {setTimeout(function() {menu.loc = 1}, 50);};
-        if (menu.loc === 1 && menu.sel === 0) {setTimeout(function() {menu.loc = 2}, 50);};
-        if (menu.loc === 1 && menu.sel === 1) {setTimeout(function() {menu.loc = 3}, 50);};
-        if (menu.loc === 1 && menu.sel === 2) {setTimeout(function() {menu.loc = 4}, 50);};
-        if (menu.loc === 1 && menu.sel === 3) {setTimeout(function() {menu.loc = 0}, 50);};
+        if (menu.loc === 0) {
+            if (menu.sel === 0) {
+                paused = !paused;
+                timerC = setInterval(function() {timer ++;}, 1000);
+            };
+            if (menu.sel = 1) {setTimeout(function() {menu.loc = 1}, 50);};
+        };
+        if (menu.loc === 1) {
+            if (menu.sel === 0) {setTimeout(function() {menu.loc = 2}, 50);}; 
+            if (menu.sel === 1) {setTimeout(function() {menu.loc = 3}, 50);};
+            if (menu.sel === 2) {setTimeout(function() {
+                canvas.width = document.documentElement.clientWidth - 2;
+                canvas.height = document.documentElement.clientHeight - 5;
+                canvas.width = document.documentElement.clientWidth - 2;
+                canvas.height = document.documentElement.clientHeight - 5;
+                itemNotInCanvas();
+                paused = false;
+                setTimeout(function(){
+                    paused = true;
+                    menu.loc = 1;
+                    menu.sel = 2;
+                },50);
+            }, 50);};
+            if (menu.sel === 3) {setTimeout(function() {menu.loc = 0}, 50);};
+        }
+        if (menu.loc === 2) {
+            if (menu.sel === 0) {setTimeout(function() {menu.loc = 4}, 50);};
+            if (menu.sel === 1) {setTimeout(function() {menu.loc = 5}, 50);};
+            if (menu.sel === 2) {setTimeout(function() {menu.loc = 6}, 50);};
+            if (menu.sel === 3) {setTimeout(function() {menu.loc = 1}, 50);};
+        }
+        if (menu.loc === 3) {
+            if (menu.sel === 0) {setTimeout(function() {menu.loc = 7}, 50);};
+            if (menu.sel === 1) {setTimeout(function() {menu.loc = 8}, 50);};
+            if (menu.sel === 2) {setTimeout(function() {menu.loc = 1}, 50);};
+        }
+        if (menu.loc === 4) {setTimeout(function() {
+            mySprite.color = input;
+            input = '#';
+            menu.loc = 2;
+        }, 50);};
+        if (menu.loc === 5) {
+            if (menu.sel === 0) {setTimeout(function() {mySprite.size = 25}, 50);};
+            if (menu.sel === 1) {setTimeout(function() {mySprite.size = 50}, 50);};
+            if (menu.sel === 2) {setTimeout(function() {mySprite.size = 75}, 50);};
+            if (menu.sel === 3) {setTimeout(function() {menu.loc = 2}, 50);};
+        }
+        if (menu.loc === 6) {
+            if (menu.sel === 0) {setTimeout(function() {mySprite.speed = 175}, 50);};
+            if (menu.sel === 1) {setTimeout(function() {mySprite.speed = 350}, 50);};
+            if (menu.sel === 2) {setTimeout(function() {mySprite.speed = 525}, 50);};
+            if (menu.sel === 3) {setTimeout(function() {menu.loc = 2}, 50);};
+        }
+        if (menu.loc === 7) {setTimeout(function() {
+            item.color = input;
+            input = '#';
+            menu.loc = 3;
+        }, 50);};
+        if (menu.loc === 8) {
+
+            if (menu.sel === 0) {setTimeout(function() {item.size = 5}, 50);};
+            if (menu.sel === 1) {setTimeout(function() {item.size = 10}, 50);};
+            if (menu.sel === 2) {setTimeout(function() {item.size = 15}, 50);};
+            if (menu.sel === 3) {setTimeout(function() {menu.loc = 3}, 50);};
+        }
     }
 }
  
@@ -103,25 +231,44 @@ window.addEventListener('keydown', function(e) {
         if (paused === false) {
             timerC = setInterval(function() {timer ++;}, 1000);
         }
-    }
-    else if (e.keyCode === 13) {
+        menu.loc = 0;
+        menu.sel = 0;
+    };
+    if (e.keyCode === 13) {
         menu.enter();
-    }
-    else if (e.keyCode === 38) {
+    };
+    if (e.keyCode === 38) {
         menu.selUp();
         keysDown[e.keyCode] = true;
-    }
-    else if (e.keyCode === 40) {
+    };
+    if (e.keyCode === 40) {
         menu.selDown();
         keysDown[e.keyCode] = true;
-    }
-    else {
-        keysDown[e.keyCode] = true;
     };
+    if (e.keyCode >= 48 && e.keyCode <= 57) {
+        ie = 0;
+        for (i = 48; i < 58; i++) {
+            if(e.keyCode === i) {input += ie};
+            ie++;
+        }
+    };
+    
+    if (e.keyCode >= 65 && e.keyCode <= 70) {
+        if (e.keyCode === 65) {input += 'a'};
+        if (e.keyCode === 66) {input += 'b'};
+        if (e.keyCode === 67) {input += 'c'};
+        if (e.keyCode === 68) {input += 'd'};
+        if (e.keyCode === 69) {input += 'e'};
+        if (e.keyCode === 70) {input += 'f'};
+    };
+    
+    if (e.keyCode === 37) {keysDown[e.keyCode] = true;};
+    if (e.keyCode === 39) {keysDown[e.keyCode] = true;};
 });
 window.addEventListener('keyup', function(e) {
     delete keysDown[e.keyCode];
 });
+ 
  
 var time = Date.now();
  
@@ -217,7 +364,7 @@ function render() {
     ctx.fillStyle = item.color;
     ctx.fillRect(item.x, item.y, item.size, item.size);
  
-    ctx.font = '12pt Courier New';
+    ctx.font = font12px;
     ctx.fillStyle = '#fff';
     ctx.textBaseline = 'top';
     ctx.fillText("Score: " + itemCounter, 10, 10);
