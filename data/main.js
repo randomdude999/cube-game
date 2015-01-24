@@ -42,13 +42,45 @@ var item = {
 };
 
 
- 
+var doubleScore = false;
 var d1ev = false;
-var dev = function() {
+function dev() {
     d1ev = !d1ev;
     if(d1ev === true) {console.log("Developer mode enabled");}
     else {console.log("Developer mode disabled");};
 };
+
+var powerup = {
+    types: [
+        {
+            //Decrease time
+            run: function() {
+                if(timer < 20) {timer = 0}
+                else {timer -= 20};
+            }
+        },
+        {
+            //+20 size
+            run: function() {
+                mySprite.size += 20;
+            }
+        },
+        {
+            //double score
+            run: function() {
+                doubleScore = true;
+                setTimeout(function() {doubleScore = false}, 20000);
+            }
+        },
+        {
+            //speed
+            run: function() {
+                mySprite.speed = 500;
+                setTimeout(function() {mySprite.speed = 350}, 20000);
+            }
+        }
+    ]
+}
 
 var menu = {
     loc: 0,
@@ -317,6 +349,7 @@ function update(mod) {
     item.x = Math.round(Math.random() * canvas.width);
     item.y = Math.round(Math.random() * canvas.height);
     itemCounter ++;
+    if (doubleScore === true) {itemCounter++};
     itemNotInCanvas();
     }
     
