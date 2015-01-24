@@ -9,17 +9,15 @@ Move with the arrow keys, pause with P
 ## Current features:
 
 * Moving around
-
 * Catching collectables
-
 * Score display
-
 * Time display
+* Pausing
+* In-game customization
 
 ## TODO:
 
-* [x] Some kind of menu
-    * [x] In-game customization options (YAY)
+* None! I need IDEAS, please!
 
 ## TOFIX:
 
