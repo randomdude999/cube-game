@@ -4,51 +4,96 @@ var ctx = canvas.getContext('2d');
 canvas.width = document.documentElement.clientWidth - 2;
 canvas.height = document.documentElement.clientHeight - 5;
 
-
 var bgcolor = '#000';
 
 var font12px = '12pt Courier New';
 var font36px = '36pt Courier New';
 
 var input = '#';
- 
+
+var buff2Tim = 0;
+var buff3Tim = 0;
+
+var pwrupLim = Math.round(Math.random() * 5000);
+var pwrupTim = 0;
 
 var mySprite = {
-
     x: Math.random() * canvas.width,
-
     y: Math.random() * canvas.height,
-
     size: 50,
-
     speed: 350,
-
     color: '#0ff'
-
 };
 
- 
+var powerItem = {
+    x: Math.round(Math.random() * canvas.width),
+    y: Math.round(Math.random() * canvas.height),
+    size: 10,
+    color: '#ff0',
+    hidden: true
+};
 
 var item = {
-
     x: Math.round(Math.random() * canvas.width),
-
     y: Math.round(Math.random() * canvas.height),
-
     size: 10,
-
     color: '#f00'
-
 };
 
 
- 
+var doubleScore = false;
 var d1ev = false;
-var dev = function() {
+function dev() {
     d1ev = !d1ev;
-    if(d1ev === true) {console.log("Developer mode enabled");}
-    else {console.log("Developer mode disabled");};
+    if(d1ev === true) {return "Developer mode enabled";}
+    else {return "Developer mode disabled";};
 };
+
+var powerup = {
+    types: [
+        {
+            //Decrease time
+            run: function() {
+                var toRemove = Math.round(timer / 15)
+                if (toRemove < 20) {toRemove = 20};
+                timer -= toRemove;
+                if (timer < 0) {timer = 0};
+            }
+        },
+        {
+            //+20 size
+            run: function() {
+                mySprite.size += 20;
+            }
+        },
+        {
+            //double score
+            run: function() {
+                doubleScore = true;
+                buff2Tim = 2000;
+            }
+        },
+        {
+            //speed
+            run: function() {
+                mySprite.speed = 500;
+                buff3Tim = 2000;
+            }
+        },
+        {
+            //+ score
+            run: function() {
+                var toAdd = Math.round(itemCounter / 10);
+                if (toAdd < 20) {toAdd = 20}
+                itemCounter += toAdd;
+            }
+        }
+    ],
+    create: function() {
+        var n = Math.round(Math.random() * 4);
+        powerup.types[n].run();
+    }
+}
 
 var menu = {
     loc: 0,
@@ -219,11 +264,11 @@ var menu = {
         }
     }
 }
- 
+
 var itemCounter = 0;
 var timer = 0;
 var paused = false;
- 
+
 var keysDown = {};
 window.addEventListener('keydown', function(e) {
     if (e.keyCode === 80) {
@@ -268,10 +313,10 @@ window.addEventListener('keydown', function(e) {
 window.addEventListener('keyup', function(e) {
     delete keysDown[e.keyCode];
 });
- 
- 
+
+
 var time = Date.now();
- 
+
 var SpriteDispX = 0;
 var SpriteDispY = 0;
 
@@ -288,7 +333,7 @@ var fps = {
         };
     }
 };
- 
+
 function update(mod) {
     fps.update();
     
@@ -317,8 +362,9 @@ function update(mod) {
     item.x = Math.round(Math.random() * canvas.width);
     item.y = Math.round(Math.random() * canvas.height);
     itemCounter ++;
+    if (doubleScore === true) {itemCounter++};
     itemNotInCanvas();
-    }
+    };
     
     if (mySprite.x < 0) {
         mySprite.x = 0;
@@ -332,8 +378,42 @@ function update(mod) {
     if (mySprite.y + mySprite.size > canvas.height) {
         mySprite.y = canvas.height - mySprite.size;
     };
+    
+    if (powerItem.hidden === false) {
+        if (
+            mySprite.x < powerItem.x + powerItem.size &&
+            mySprite.x + mySprite.size > powerItem.x &&
+            mySprite.y < powerItem.y + powerItem.size &&
+            mySprite.y + mySprite.size > powerItem.y
+        ) {
+            powerup.create()
+            powerItem.hidden = true;
+            powerItem.x = Math.round(Math.random() * canvas.width);
+            powerItem.y = Math.round(Math.random() * canvas.height);
+            pwrItemNotInCanvas();
+            pwrupTim = 0;
+        }
+    };
+    pwrupTim++;
+    if (pwrupTim >= pwrupLim) {
+        powerItem.hidden = false;
+        pwrupTim = 0;
+        pwrupLim = Math.round(Math.random() * 5000);
+    }
+    if (buff2Tim > 0) {
+        buff2Tim--;
+    }
+    else {
+        doubleScore = false;
+    };
+    if (buff3Tim > 0) {
+        buff3Tim--;
+    }
+    else {
+        mySprite.speed = 350;
+    };
 };
- 
+
 function itemNotInCanvas() {
     if (item.x > canvas.width - item.size || item.y > canvas.height - item.size) {
         item.x = Math.round(Math.random() * canvas.width);
@@ -341,7 +421,15 @@ function itemNotInCanvas() {
         itemNotInCanvas();
     };
 };
- 
+
+function pwrItemNotInCanvas() {
+    if (powerItem.x > canvas.width-powerItem.size || powerItem.y > canvas.height - powerItem.size) {
+        powerItem.x = Math.round(Math.random() * canvas.width);
+        powerItem.y = Math.round(Math.random() * canvas.height);
+        pwrItemNotInCanvas();
+    }
+}
+
 function render() {
     ctx.fillStyle = bgcolor;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -364,6 +452,10 @@ function render() {
     ctx.fillStyle = item.color;
     ctx.fillRect(item.x, item.y, item.size, item.size);
  
+    if (powerItem.hidden === false) {
+        ctx.fillStyle = powerItem.color;
+        ctx.fillRect(powerItem.x, powerItem.y, powerItem.size, powerItem.size);
+    }
     ctx.font = font12px;
     ctx.fillStyle = '#fff';
     ctx.textBaseline = 'top';
@@ -380,7 +472,7 @@ function render() {
     };
 };
 
- 
+
 function run() {
     if (paused === false) {
         update((Date.now() - time) / 1000);
@@ -392,9 +484,10 @@ function run() {
     };
     time = Date.now();
 };
- 
+
 setInterval(run, 10);
 itemNotInCanvas();
+pwrItemNotInCanvas();
 timerC = setInterval(function() {timer ++;}, 1000);
 
 console.log("Type 'dev()' to enable developer mode");
