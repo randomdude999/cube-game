@@ -1,8 +1,8 @@
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
 
-canvas.width = document.documentElement.clientWidth - 2;
-canvas.height = document.documentElement.clientHeight - 5;
+canvas.width = document.documentElement.clientWidth;
+canvas.height = document.documentElement.clientHeight;
 
 var bgcolor = '#000';
 
@@ -21,25 +21,29 @@ var mySprite = {
     x: Math.random() * canvas.width,
     y: Math.random() * canvas.height,
     size: 50,
-    speed: 350,
-    color: '#0ff'
+    speed: 350
 };
 
 var powerItem = {
     x: Math.round(Math.random() * canvas.width),
     y: Math.round(Math.random() * canvas.height),
     size: 10,
-    color: '#ff0',
     hidden: true
 };
 
 var item = {
     x: Math.round(Math.random() * canvas.width),
     y: Math.round(Math.random() * canvas.height),
-    size: 10,
-    color: '#f00'
+    size: 10
 };
 
+var colors = {
+    mySprite: '#0ff',
+    item: '#f00',
+    powerItem: '#ff0',
+    canvas: '#000',
+    text: '#fff'
+};
 
 var doubleScore = false;
 var d1ev = false;
@@ -114,84 +118,43 @@ var menu = {
             menu.hl(0);
             ctx.fillText("Resume", 10, 56);
             menu.hl(1);
-            ctx.fillText("Options", 10, 102);
+            ctx.fillText("Change colors", 10, 102);
         }
         else if (menu.loc === 1) {
-            if (menu.sel >= 4) {menu.sel = 3;};
-            ctx.fillText("OPTIONS", 10, 10);
+            if (menu.sel >= 6) {menu.sel = 5};
+            ctx.fillText("COLORS", 10, 10);
             menu.hl(0);
             ctx.fillText("Your cube", 10, 56);
             menu.hl(1);
             ctx.fillText("Collectable", 10, 102);
             menu.hl(2);
-            ctx.fillText("Update canvas", 10, 148);
+            ctx.fillText("Canvas", 10, 148);
             menu.hl(3);
-            ctx.fillText("Back", 10, 194);
+            ctx.fillText("Powerup", 10, 194);
+            menu.hl(4);
+            ctx.fillText("Text", 10, 240);
+            menu.hl(5);
+            ctx.fillText("Back", 10, 286);
         }
         else if (menu.loc === 2) {
-            if (menu.sel >= 4) {menu.sel = 3};
             ctx.fillText("YOUR CUBE", 10, 10);
-            menu.hl(0);
-            ctx.fillText("Color", 10, 56);
-            menu.hl(1);
-            ctx.fillText("Size", 10, 102);
-            menu.hl(2);
-            ctx.fillText("Speed", 10, 148);
-            menu.hl(3);
-            ctx.fillText("Back", 10, 194);
+            ctx.fillText(input, 10, 56);
         }
         else if (menu.loc === 3) {
-            if (menu.sel >= 3) {menu.sel = 2};
             ctx.fillText("COLLECTABLE", 10, 10);
-            menu.hl(0);
-            ctx.fillText("Color", 10, 56);
-            menu.hl(1);
-            ctx.fillText("Size", 10, 102);
-            menu.hl(2);
-            ctx.fillText("Back", 10, 148);
+            ctx.fillText(input, 10, 56);
         }
         else if (menu.loc === 4) {
-            ctx.fillText("YOUR CUBE: COLOR", 10, 10);
+            ctx.fillText("CANVAS", 10, 10);
             ctx.fillText(input, 10, 56);
         }
         else if (menu.loc === 5) {
-            if (menu.sel >= 4) {menu.sel = 3};
-            ctx.fillText("YOUR CUBE: SIZE", 10, 10);
-            menu.hl(0);
-            ctx.fillText("Small", 10, 56);
-            menu.hl(1);
-            ctx.fillText("Medium", 10, 102);
-            menu.hl(2);
-            ctx.fillText("Large", 10, 148);
-            menu.hl(3);
-            ctx.fillText("Back", 10, 194);
-        }
-        else if (menu.loc === 6) {
-            ctx.fillText("YOUR CUBE: SPEED", 10, 10);
-            menu.hl(0);
-            ctx.fillText("Slow", 10, 56);
-            menu.hl(1);
-            ctx.fillText("Medium", 10, 102);
-            menu.hl(2);
-            ctx.fillText("Fast", 10, 148);
-            menu.hl(3);
-            ctx.fillText("Back", 10, 194);
-        }
-        else if (menu.loc === 7) {
-            ctx.fillText("COLLECTABLE: COLOR", 10, 10);
+            ctx.fillText("POWERUP", 10, 10);
             ctx.fillText(input, 10, 56);
         }
-        else if (menu.loc === 8) {
-            if (menu.sel >= 4) {menu.sel = 3};
-            ctx.fillText("COLLECTABLE: SIZE", 10, 10);
-            menu.hl(0);
-            ctx.fillText("Small", 10, 56);
-            menu.hl(1);
-            ctx.fillText("Medium", 10, 102);
-            menu.hl(2);
-            ctx.fillText("Large", 10, 148);
-            menu.hl(3);
-            ctx.fillText("Back", 10, 194);
+        else if (menu.loc === 6) {
+            ctx.fillText("TEXT", 10, 10);
+            ctx.fillText(input, 10, 56);
         }
     },
     selDown: function() {menu.sel++;},
@@ -202,66 +165,41 @@ var menu = {
                 paused = !paused;
                 timerC = setInterval(function() {timer ++;}, 1000);
             };
-            if (menu.sel = 1) {setTimeout(function() {menu.loc = 1}, 50);};
+            if (menu.sel === 1) {setTimeout(function() {menu.loc = 1}, 50);};
         };
         if (menu.loc === 1) {
             if (menu.sel === 0) {setTimeout(function() {menu.loc = 2}, 50);}; 
             if (menu.sel === 1) {setTimeout(function() {menu.loc = 3}, 50);};
-            if (menu.sel === 2) {setTimeout(function() {
-                canvas.width = document.documentElement.clientWidth - 2;
-                canvas.height = document.documentElement.clientHeight - 5;
-                canvas.width = document.documentElement.clientWidth - 2;
-                canvas.height = document.documentElement.clientHeight - 5;
-                itemNotInCanvas();
-                paused = false;
-                setTimeout(function(){
-                    paused = true;
-                    menu.loc = 1;
-                    menu.sel = 2;
-                },50);
-            }, 50);};
-            if (menu.sel === 3) {setTimeout(function() {menu.loc = 0}, 50);};
+            if (menu.sel === 2) {setTimeout(function() {menu.loc = 4}, 50);};
+            if (menu.sel === 3) {setTimeout(function() {menu.loc = 5}, 50);};
+            if (menu.sel === 4) {setTimeout(function() {menu.loc = 6}, 50);};
+            if (menu.sel === 5) {setTimeout(function() {menu.loc = 0}, 50);};
         }
-        if (menu.loc === 2) {
-            if (menu.sel === 0) {setTimeout(function() {menu.loc = 4}, 50);};
-            if (menu.sel === 1) {setTimeout(function() {menu.loc = 5}, 50);};
-            if (menu.sel === 2) {setTimeout(function() {menu.loc = 6}, 50);};
-            if (menu.sel === 3) {setTimeout(function() {menu.loc = 1}, 50);};
-        }
-        if (menu.loc === 3) {
-            if (menu.sel === 0) {setTimeout(function() {menu.loc = 7}, 50);};
-            if (menu.sel === 1) {setTimeout(function() {menu.loc = 8}, 50);};
-            if (menu.sel === 2) {setTimeout(function() {menu.loc = 1}, 50);};
-        }
+        if (menu.loc === 2) {setTimeout(function() {
+            colors.mySprite = input;
+            input = '#';
+            menu.loc = 1;
+        }, 50);};
+        if (menu.loc === 3) {setTimeout(function() {
+            colors.item = input;
+            input = '#';
+            menu.loc = 1;
+        }, 50);};
         if (menu.loc === 4) {setTimeout(function() {
-            mySprite.color = input;
+            colors.canvas = input;
             input = '#';
-            menu.loc = 2;
+            menu.loc = 1;
         }, 50);};
-        if (menu.loc === 5) {
-            if (menu.sel === 0) {setTimeout(function() {mySprite.size = 25}, 50);};
-            if (menu.sel === 1) {setTimeout(function() {mySprite.size = 50}, 50);};
-            if (menu.sel === 2) {setTimeout(function() {mySprite.size = 75}, 50);};
-            if (menu.sel === 3) {setTimeout(function() {menu.loc = 2}, 50);};
-        }
-        if (menu.loc === 6) {
-            if (menu.sel === 0) {setTimeout(function() {mySprite.speed = 175}, 50);};
-            if (menu.sel === 1) {setTimeout(function() {mySprite.speed = 350}, 50);};
-            if (menu.sel === 2) {setTimeout(function() {mySprite.speed = 525}, 50);};
-            if (menu.sel === 3) {setTimeout(function() {menu.loc = 2}, 50);};
-        }
-        if (menu.loc === 7) {setTimeout(function() {
-            item.color = input;
+        if (menu.loc === 5) {setTimeout(function() {
+            colors.powerItem = input;
             input = '#';
-            menu.loc = 3;
+            menu.loc = 1;
         }, 50);};
-        if (menu.loc === 8) {
-
-            if (menu.sel === 0) {setTimeout(function() {item.size = 5}, 50);};
-            if (menu.sel === 1) {setTimeout(function() {item.size = 10}, 50);};
-            if (menu.sel === 2) {setTimeout(function() {item.size = 15}, 50);};
-            if (menu.sel === 3) {setTimeout(function() {menu.loc = 3}, 50);};
-        }
+        if (menu.loc === 6) {setTimeout(function() {
+            colors.text = input;
+            input = '#';
+            menu.loc = 1;
+        }, 50);};
     }
 }
 
@@ -333,6 +271,17 @@ var fps = {
         };
     }
 };
+
+function resizeEvent() {
+    canvas.width = document.documentElement.clientWidth;
+    canvas.height = document.documentElement.clientHeight;
+    itemNotInCanvas();
+    pwrItemNotInCanvas();
+    if (paused === true) {
+        paused = false;
+        setTimeout(function() {paused = true}, 20)
+    }
+}
 
 function update(mod) {
     fps.update();
@@ -431,7 +380,7 @@ function pwrItemNotInCanvas() {
 }
 
 function render() {
-    ctx.fillStyle = bgcolor;
+    ctx.fillStyle = colors.canvas;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
  
     if (SpriteDispX < 0) {
@@ -446,18 +395,18 @@ function render() {
     if (SpriteDispY > canvas.height - mySprite.size) {
         SpriteDispY = canvas.height - mySprite.size;
     };
-    ctx.fillStyle = mySprite.color;
+    ctx.fillStyle = colors.mySprite;
     ctx.fillRect(SpriteDispX, SpriteDispY, mySprite.size, mySprite.size);
  
-    ctx.fillStyle = item.color;
+    ctx.fillStyle = colors.item;
     ctx.fillRect(item.x, item.y, item.size, item.size);
  
     if (powerItem.hidden === false) {
-        ctx.fillStyle = powerItem.color;
+        ctx.fillStyle = colors.powerItem;
         ctx.fillRect(powerItem.x, powerItem.y, powerItem.size, powerItem.size);
     }
     ctx.font = font12px;
-    ctx.fillStyle = '#fff';
+    ctx.fillStyle = colors.text;
     ctx.textBaseline = 'top';
     ctx.fillText("Score: " + itemCounter, 10, 10);
     ctx.fillText("Time: " + timer, 10, 32);

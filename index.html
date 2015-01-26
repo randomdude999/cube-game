@@ -1,36 +1,20 @@
 <!DOCTYPE html>
-
 <html>
-
-
     <head>
-
         <meta charset="utf-8"></meta>
         <title>Cube Game</title>
-
         <link rel="shortcut icon" href="data/favicon.ico">
-
         <style type="text/css">
-
             body {
-
-                margin: 1px;
-                margin-bottom: 0px;
-
+                margin: 0;
                 background-color: #888;
-
+                overflow: hidden;
             }
 
         </style>
-
     </head>
-
-
-    <body>
-
+    <body onresize="resizeEvent()">
         <canvas id="canvas"></canvas>
         <script src="data/main.js"></script>
     </body>
-
-
 </html>
