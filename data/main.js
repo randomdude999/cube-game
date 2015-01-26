@@ -6,6 +6,8 @@ canvas.height = document.documentElement.clientHeight;
 
 var bgcolor = '#000';
 
+var saveExists = false;
+
 var font12px = '12pt Courier New';
 var font36px = '36pt Courier New';
 
@@ -113,12 +115,16 @@ var menu = {
         ctx.fillStyle = '#000';
         if (menu.sel <= -1) {menu.sel = 0};
         if (menu.loc === 0) {
-            if (menu.sel >= 2) {menu.sel = 1};
+            if (menu.sel >= 4) {menu.sel = 3};
             ctx.fillText("MENU", 10, 10);
             menu.hl(0);
             ctx.fillText("Resume", 10, 56);
             menu.hl(1);
             ctx.fillText("Change colors", 10, 102);
+            menu.hl(2);
+            ctx.fillText("Save", 10, 148);
+            menu.hl(3);
+            ctx.fillText("Load save", 10, 194);
         }
         else if (menu.loc === 1) {
             if (menu.sel >= 6) {menu.sel = 5};
@@ -166,6 +172,8 @@ var menu = {
                 timerC = setInterval(function() {timer ++;}, 1000);
             };
             if (menu.sel === 1) {setTimeout(function() {menu.loc = 1}, 50);};
+            if (menu.sel === 2) {setTimeout(save, 50);};
+            if (menu.sel === 3) {setTimeout(loadSave, 50);};
         };
         if (menu.loc === 1) {
             if (menu.sel === 0) {setTimeout(function() {menu.loc = 2}, 50);}; 
@@ -247,6 +255,7 @@ window.addEventListener('keydown', function(e) {
     
     if (e.keyCode === 37) {keysDown[e.keyCode] = true;};
     if (e.keyCode === 39) {keysDown[e.keyCode] = true;};
+    e.preventDefault();
 });
 window.addEventListener('keyup', function(e) {
     delete keysDown[e.keyCode];
@@ -280,6 +289,60 @@ function resizeEvent() {
     if (paused === true) {
         paused = false;
         setTimeout(function() {paused = true}, 20)
+    }
+}
+
+function save() {
+    localStorage.mySpriteSize = mySprite.size;
+    localStorage.mySpriteX = mySprite.x;
+    localStorage.mySpriteY = mySprite.y;
+    localStorage.mySpriteSpeed = mySprite.speed;
+    localStorage.itemX = item.x;
+    localStorage.itemY = item.y;
+    localStorage.score = itemCounter;
+    localStorage.time = timer;
+    localStorage.powerItemX = powerItem.x;
+    localStorage.powerItemY = powerItem.y;
+    localStorage.powerItemHidden = powerItem.hidden;
+    localStorage.powerupTime = pwrupTim;
+    localStorage.powerupLimit = pwrupLim;
+    localStorage.buff2time = buff2Tim;
+    localStorage.buff3time = buff3Tim;
+    localStorage.doubleScore = doubleScore;
+    localStorage.colorsMySprite = colors.mySprite;
+    localStorage.colorsItem = colors.item;
+    localStorage.colorsCanvas = colors.canvas;
+    localStorage.colorsPowerup = colors.powerItem;
+    localStorage.colorsText = colors.text;
+    saveExists = true;
+};
+
+function loadSave() {
+    if (saveExists = true) {
+        mySprite.size = Number(localStorage.mySpriteSize);
+        mySprite.x = Number(localStorage.mySpriteX);
+        mySprite.y = Number(localStorage.mySpriteY);
+        mySprite.speed = Number(localStorage.mySpriteSpeed);
+        item.x = Number(localStorage.itemX);
+        item.y = Number(localStorage.itemY);
+        itemCounter = Number(localStorage.score);
+        timer = Number(localStorage.time);
+        powerItem.x = Number(localStorage.powerItemX);
+        powerItem.y = Number(localStorage.powerItemY);
+        powerItem.hidden = Number(localStorage.powerItemHidden);
+        pwrupTim = Number(localStorage.powerupTime);
+        pwrupLim = Number(localStorage.powerupLimit);
+        buff2Tim = Number(localStorage.buff2time);
+        buff3Tim = Number(localStorage.buff3time);
+        doubleScore = localStorage.doubleScore;
+        colors.mySprite = localStorage.colorsMySprite;
+        colors.item = localStorage.colorsItem;
+        colors.canvas = localStorage.colorsCanvas;
+        colors.powerItem = localStorage.colorsPowerup;
+        colors.text = localStorage.colorsText;
+    }
+    else {
+        menu.sel = 2;
     }
 }
 
@@ -418,6 +481,7 @@ function render() {
         ctx.fillText("Item x: " + item.x, 10, 142);
         ctx.fillText("Item y: " + item.y, 10, 164);
         ctx.fillText("FPS: " + fps.last, 10, 186);
+        ctx.fillText("Powerup will spawn in: " + (pwrupLim - pwrupTim), 10, 208);
     };
 };
 
