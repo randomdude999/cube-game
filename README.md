@@ -5,6 +5,8 @@ If you want to do something with the code (i.e. make a new version), email me!
 
 Move with the arrow keys, pause with P
 
+Check out the (one-page:smile:) [wiki](https://github.com/randomdude999/cube-game/wiki) 
+
 ## Current features:
 
 * Moving around
@@ -14,6 +16,7 @@ Move with the arrow keys, pause with P
 * Pausing
 * In-game customization
 * Powerups
+* Saving
 
 ## TODO:
 
