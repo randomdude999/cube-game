@@ -6,8 +6,6 @@ canvas.height = document.documentElement.clientHeight;
 
 var bgcolor = '#000';
 
-var saveExists = false;
-
 var font12px = '12pt Courier New';
 var font36px = '36pt Courier New';
 
@@ -231,10 +229,12 @@ window.addEventListener('keydown', function(e) {
     if (e.keyCode === 38) {
         menu.selUp();
         keysDown[e.keyCode] = true;
+        e.preventDefault();
     };
     if (e.keyCode === 40) {
         menu.selDown();
         keysDown[e.keyCode] = true;
+        e.preventDefault();
     };
     if (e.keyCode >= 48 && e.keyCode <= 57) {
         ie = 0;
@@ -255,7 +255,6 @@ window.addEventListener('keydown', function(e) {
     
     if (e.keyCode === 37) {keysDown[e.keyCode] = true;};
     if (e.keyCode === 39) {keysDown[e.keyCode] = true;};
-    e.preventDefault();
 });
 window.addEventListener('keyup', function(e) {
     delete keysDown[e.keyCode];
@@ -314,36 +313,32 @@ function save() {
     localStorage.colorsCanvas = colors.canvas;
     localStorage.colorsPowerup = colors.powerItem;
     localStorage.colorsText = colors.text;
-    saveExists = true;
 };
 
 function loadSave() {
-    if (saveExists = true) {
-        mySprite.size = Number(localStorage.mySpriteSize);
-        mySprite.x = Number(localStorage.mySpriteX);
-        mySprite.y = Number(localStorage.mySpriteY);
-        mySprite.speed = Number(localStorage.mySpriteSpeed);
-        item.x = Number(localStorage.itemX);
-        item.y = Number(localStorage.itemY);
-        itemCounter = Number(localStorage.score);
-        timer = Number(localStorage.time);
-        powerItem.x = Number(localStorage.powerItemX);
-        powerItem.y = Number(localStorage.powerItemY);
-        powerItem.hidden = Number(localStorage.powerItemHidden);
-        pwrupTim = Number(localStorage.powerupTime);
-        pwrupLim = Number(localStorage.powerupLimit);
-        buff2Tim = Number(localStorage.buff2time);
-        buff3Tim = Number(localStorage.buff3time);
-        doubleScore = localStorage.doubleScore;
-        colors.mySprite = localStorage.colorsMySprite;
-        colors.item = localStorage.colorsItem;
-        colors.canvas = localStorage.colorsCanvas;
-        colors.powerItem = localStorage.colorsPowerup;
-        colors.text = localStorage.colorsText;
-    }
-    else {
-        menu.sel = 2;
-    }
+    mySprite.size = Number(localStorage.mySpriteSize);
+    mySprite.x = Number(localStorage.mySpriteX);
+    mySprite.y = Number(localStorage.mySpriteY);
+    mySprite.speed = Number(localStorage.mySpriteSpeed);
+    item.x = Number(localStorage.itemX);
+    item.y = Number(localStorage.itemY);
+    itemCounter = Number(localStorage.score);
+    timer = Number(localStorage.time);
+    powerItem.x = Number(localStorage.powerItemX);
+    powerItem.y = Number(localStorage.powerItemY);
+    powerItem.hidden = Number(localStorage.powerItemHidden);
+    pwrupTim = Number(localStorage.powerupTime);
+    pwrupLim = Number(localStorage.powerupLimit);
+    buff2Tim = Number(localStorage.buff2time);
+    buff3Tim = Number(localStorage.buff3time);
+    doubleScore = localStorage.doubleScore;
+    colors.mySprite = localStorage.colorsMySprite;
+    colors.item = localStorage.colorsItem;
+    colors.canvas = localStorage.colorsCanvas;
+    colors.powerItem = localStorage.colorsPowerup;
+    colors.text = localStorage.colorsText;
+    itemNotInCanvas();
+    pwrItemNotInCanvas();
 }
 
 function update(mod) {
